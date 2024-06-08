@@ -302,32 +302,16 @@ Every value of any type in a GIL program implements this interface.
 
 ```
 x: any
-x = 3               # int implemnents the empty interfaace
+x = 3               # int implements the empty interfaace
 x = true            # bool implements the empty interface
 x = "foo"           # string implements the empty interface
 x = ["foo", "bar"]  # array[string] implements the empty interface
 ```
 
-If it were possible to declare `list[int]` as an interface,
-it would look something like this:
-
-```
-type list[int]: interface {
-    // you can get the length of a list
-    len(): int
-
-    // you can add a single value to a list, growing it in-place
-    append(val: int)
-
-    // you can lookup one element of a list: values[3]
-    operator [] (idx: int): int
-
-    // you can update one element of a list: values[3] = 42
-    operator []= (idx: int, val: int)
-}
-```
-(There's more to `list[int]` than this, but we're getting ahead of ourselves.
-And, of course, there are many possible `list[...]` types.)
+Experienced developers will have figured out by now that
+`array[int]` and `array[bool]` are distinct types.
+(Likewise for `list[int]` and `list[bool]`.)
+Ignore that for now: we'll cover that later, when we get to _generic types_.
 
 ## Pointers
 
