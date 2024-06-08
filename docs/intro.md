@@ -43,7 +43,8 @@ The absence of a return type indicates that this is a _procedure_,
 a function that returns no value.
 Inside a procedure, the `return` statement is optional and always bare.
 
-Function names consist of lowercase letters and underscores.
+Function names consist of lowercase letters, underscores, and digits
+(but they cannot start with a digit).
 
 Most functions have one or more parameters and a return value,
 whose types must all be declared:
@@ -57,9 +58,10 @@ func greeting(name: string): string {
 When we need to distinguish functions that return a value from procedures,
 we'll call them _normal functions_.
 Simplifying a bit, every normal function must have an explicit return value.
-There must be no reachable code paths that lack a `return` statement.
+Every reachable code path must have a `return` statement,
+and the function must return a value of the correct type.
 (There are situations, notably infinite loops and exceptions,
-where this is not quite true.)
+where the rules around reachable code and `return` statements are a little loose.)
 
 ```
 // error: function 'invalid' contains a code path with no return statement
@@ -91,8 +93,9 @@ If you don't explicitly assign a value,
 the variable will take the _default value_ for its type:
 integer 0, boolean false, float 0.0, etc.
 So the second example is a smidge more efficient, because `n` is only assigned one value.
-In the first example, the default value for `int32` (0) is assigned,
-and then 50 is assigned.
+In the first example, the default value for `int` (0) is assigned,
+and then 50 is assigned
+(although a clever compiler would hopefully optimize this away).
 
 If you don't explicitly declare a type, GIL infers a type at compile time:
 
@@ -149,7 +152,7 @@ which are supported directly in hardware of any modern processor.
 
 ## Alias Types
 
-With `byte`, we've seen one alias type.
+With `byte`, we've seen one alias type which is built-in to the language.
 You can define as many alias types as you like:
 
 ```
@@ -157,7 +160,7 @@ type user_id: int8
 type group_id: int8
 ```
 
-After this, types `user_id` and `group_id` are _nearly_ equivalent to `int`.
+After this, types `user_id` and `group_id` are _nearly_ equivalent to `int8`.
 Specifically the same pattern of bits in memory has the same meaning:
 00000001 is 1, 11111111 is -1, etc.
 
@@ -202,7 +205,7 @@ values = [4, -1, 8, 10]
 ```
 
 This single line of code actually involves two distinct types.
-The _concrete_ type of the array is `array[int]`.
+The _concrete_ type of `values` is `array[int]`: a dynamic array of `int`.
 That determines how the data is represented in memory:
 as 5 machine words, one for the length and one for the 4 values.
 For example, on a 32-bit machine, this array would take up 20 contiguous bytes in memory:
